@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "sgbd.c"
+#include "sgbd.h"
 
 /*
     Aquivo clientes - Responsável pelo CRUD dessa "página"
@@ -28,6 +28,7 @@ void menuCliente()
         printf("------------------------------\n");
         printf("Digite uma das Opcoes: ");
         scanf("%d", &escolha);
+        while (getchar() != '\n');
 
         switch (escolha)
         {

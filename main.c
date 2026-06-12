@@ -2,14 +2,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "produtos.c"
+#include "sgbd.h"
 #include "clientes.c"
+#define TAM 3
 
 // Aquivo main - Responsável pelo menu
+
+Produto produtos[TAM];
 
 void menu();
 
 int main()
 {
+
+     for (int i = 0; i < TAM; i++) {
+        produtos[i].id = -1;
+    }
+
     menu();
 
     return 0;
@@ -29,6 +38,7 @@ void menu()
         printf("------------------------------\n");
         printf("Digite uma das Opcoes: ");
         scanf("%d", &escolha);
+        while (getchar() != '\n');
 
         switch (escolha)
         {

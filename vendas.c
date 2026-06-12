@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "sgbd.c"
+#include "sgbd.h"
 
 /*
     Aquivo Vendas - Responsável pelo CRUD dessa "página"
@@ -28,6 +28,7 @@ void menuVenda()
         printf("------------------------------\n");
         printf("Digite uma das Opcoes: ");
         scanf("%d", &escolha);
+        while (getchar() != '\n');
 
         switch (escolha)
         {
