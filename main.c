@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "produtos.c"
-#include "sgbd.h"
 #include "clientes.c"
+#include "sgbd.h"
 #define TAM 3
 
 // Aquivo main - Responsável pelo menu

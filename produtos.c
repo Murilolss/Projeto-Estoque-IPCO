@@ -15,7 +15,7 @@
 
 void cadastroProduto();
 void atualizarProduto();
-void deletarProduto();
+void desativarProduto();
 void buscarProduto();
 void buscarProdutos();
 
@@ -57,7 +57,7 @@ void menuProduto()
 
         case 3:
             system("cls");
-            deletarProduto();
+            desativarProduto();
 
             sleep(3);
             break;
@@ -127,6 +127,10 @@ void cadastroProduto()
 
         printf("Digite o Preco do Produto: ");
         scanf("%f", &produtos[vazio].preco);
+
+        strcpy(produtos[vazio].status, "ATIVO");
+
+        printf("\nProduto cadastrado com sucesso!");
     }
 }
 
@@ -135,7 +139,7 @@ void atualizarProduto()
     printf("Produto atualizado com sucesso");
 }
 
-void deletarProduto()
+void desativarProduto()
 {
     printf("Produto deletado com sucesso");
 }
@@ -164,14 +168,15 @@ void buscarProdutos()
         return;
     }
 
-    printf("\n+------+--------------------+----------+---------------+");
-    printf("\n| %-4s | %-18s | %-8s | %-13s |", "ID", "Nome", "Estoque", "Preco");
-    printf("\n+------+--------------------+----------+---------------+");
+    printf("\n+------+--------------------+----------+---------------+----------+");
+    printf("\n| %-4s | %-18s | %-8s | %-13s | %-8s |", "ID", "Nome", "Estoque", "Preco", "Status");
+    printf("\n+------+--------------------+----------+---------------+----------+");
 
     for (int i = 0; i < TAM; i++)
     {
-        if (produtos[i].id == -1) continue; // pula vazios
-        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco);
-        printf("\n+------+--------------------+----------+---------------+");
+        if (produtos[i].id == -1)
+            continue;
+        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-8s |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco, produtos[i].status);
+        printf("\n+------+--------------------+----------+---------------+----------+");
     }
 }
