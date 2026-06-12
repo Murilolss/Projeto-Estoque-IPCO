@@ -17,4 +17,21 @@ typedef struct {
 
 extern Produto produtos[TAM];
 
+typedef struct{
+    char nome[30];
+    int cpf;
+    int totalvendas;
+} Cliente;
+
+extern Cliente clientes[TAM];
+
+typedef struct{
+    char datavenda[10];
+    int cpfcliente;
+    int idproduto;
+    int qtddesejada;
+} Venda;
+
+extern Venda vendas[TAM];
+
 #endif
