@@ -9,6 +9,8 @@
 // Aquivo main - Responsável pelo menu
 
 Produto produtos[TAM];
+Venda vendas[TAM];
+Cliente clientes[TAM];
 
 void menu();
 
@@ -17,6 +19,14 @@ int main()
 
      for (int i = 0; i < TAM; i++) {
         produtos[i].id = -1;
+    }
+
+    for (int i = 0; i < TAM; i++) {
+        clientes[i].id = -1;
+    }
+
+    for (int i = 0; i < TAM; i++) {
+        vendas[i].id = -1;
     }
 
     menu();
@@ -30,7 +40,7 @@ void menu()
     do
     {
         system("cls");
-        printf("---- Selecione uma Pagina ----\n");
+        printf("---- Selecion uma Pagina ----\n");
         printf("1 - Produtos\n");
         printf("2 - Clientes\n");
         printf("3 - Vendas\n");
