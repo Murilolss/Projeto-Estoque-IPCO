@@ -65,8 +65,9 @@ void menuProduto()
         case 4:
             system("cls");
             buscarProduto();
+            printf("\nPressione Enter para voltar...");
+            getchar();
 
-            sleep(3);
             break;
 
         case 5:
@@ -122,8 +123,7 @@ void cadastroProduto()
 
         printf("Digite a quantidade no Estoque: ");
         scanf("%d", &produtos[vazio].estoque);
-        while (getchar() != '\n')
-            ;
+        while (getchar() != '\n');
 
         printf("Digite o Preco do Produto: ");
         scanf("%f", &produtos[vazio].preco);
@@ -146,7 +146,24 @@ void desativarProduto()
 
 void buscarProduto()
 {
-    printf("Produto encontrado com sucesso");
+    int id = 0;
+
+    printf("Digite o ID do produto que deseja Buscar: ");
+    scanf("%d", &id);
+    while (getchar() != '\n');
+
+    for (int i = 0; i < TAM; i++)
+    {
+        if (id == produtos[i].id)
+        {
+            printf("\n+------+--------------------+----------+---------------+----------+");
+            printf("\n| %-4s | %-18s | %-8s | %-13s | %-8s |", "ID", "Nome", "Estoque", "Preco", "Status");
+            printf("\n+------+--------------------+----------+---------------+----------+");
+            printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-8s |", produtos[id].id, produtos[id].nome, produtos[id].estoque, produtos[id].preco, produtos[id].status);
+            printf("\n+------+--------------------+----------+---------------+----------+");
+        
+        }
+    }
 }
 
 void buscarProdutos()
