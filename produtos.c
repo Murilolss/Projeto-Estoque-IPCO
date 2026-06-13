@@ -52,14 +52,12 @@ void menuProduto()
             system("cls");
             atualizarProduto();
 
-            sleep(3);
             break;
 
         case 3:
             system("cls");
             desativarProduto();
 
-            sleep(3);
             break;
 
         case 4:
@@ -123,10 +121,13 @@ void cadastroProduto()
 
         printf("Digite a quantidade no Estoque: ");
         scanf("%d", &produtos[vazio].estoque);
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
 
         printf("Digite o Preco do Produto: ");
         scanf("%f", &produtos[vazio].preco);
+        while (getchar() != '\n')
+            ;
 
         strcpy(produtos[vazio].status, "ATIVO");
 
@@ -136,12 +137,125 @@ void cadastroProduto()
 
 void atualizarProduto()
 {
-    printf("Produto atualizado com sucesso");
+    int id = 0;
+
+    printf("Digite o ID do produto que deseja Atualizar: ");
+    scanf("%d", &id);
+    while (getchar() != '\n')
+        ;
+
+    for (int i = 0; i < TAM; i++)
+    {
+        if (produtos[i].id == id)
+        {
+            id = i;
+            break;
+        }
+    }
+
+    if (id != 0)
+    {
+        printf("Produto com esse ID nao encontrado!");
+    }
+    else
+    {
+
+        printf("\n+------+--------------------+----------+---------------+----------+");
+        printf("\n| %-4s | %-18s | %-8s | %-13s | %-8s |", "ID", "Nome", "Estoque", "Preco", "Status");
+        printf("\n+------+--------------------+----------+---------------+----------+");
+        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-8s |", produtos[id].id, produtos[id].nome, produtos[id].estoque, produtos[id].preco, produtos[id].status);
+        printf("\n+------+--------------------+----------+---------------+----------+");
+    }
+
+    int escolha;
+    int escolhaStatus = 0;
+    do
+    {
+        printf("\n---- Selecione um campo Para atualizar ----\n");
+        printf("1 - Nome\n");
+        printf("2 - Estoque\n");
+        printf("3 - Preco\n");
+        printf("4 - Status\n");
+        printf("5 - Voltar\n");
+        printf("6 - Encerrar Programa\n");
+        printf("------------------------------\n");
+        printf("Digite uma das Opcoes: ");
+        scanf("%d", &escolha);
+        while (getchar() != '\n')
+            ;
+
+        switch (escolha)
+        {
+        case 1:
+            printf("Digite um novo Nome: ");
+            fgets(produtos[id].nome, 30, stdin);
+            produtos[id].nome[strcspn(produtos[id].nome, "\n")] = '\0';
+
+            printf("\nNome atualizado com sucesso! Pressione enter para voltar...");
+            getchar();
+            break;
+
+        case 2:
+            printf("Digite a nova quantidade no Estoque: ");
+            scanf("%d", &produtos[id].estoque);
+            while (getchar() != '\n')
+                ;
+
+            printf("\nEstoque atualizado com sucesso! Pressione enter para voltar...");
+            getchar();
+            break;
+
+        case 3:
+            printf("Digite um novo Preco do Produto: ");
+            scanf("%f", &produtos[id].preco);
+            while (getchar() != '\n')
+                ;
+
+            printf("\nPreco atualizado com sucesso! Pressione enter para voltar...");
+            getchar();
+
+            break;
+
+        case 4:
+            printf("Digite 1 para Status(ATIVO) ou 2 para Status(INATIVO): ");
+            scanf("%d", &escolhaStatus);
+            while (getchar() != '\n')
+                ;
+
+            if (escolhaStatus == 1)
+            {
+                strcpy(produtos[id].status, "ATIVO");
+            }
+            else if (escolhaStatus == 2)
+            {
+                strcpy(produtos[id].status, "INATIVO");
+            }
+
+            printf("\nStatus atualizado com sucesso! Pressione enter para voltar...");
+            getchar();
+
+            break;
+
+        case 5:
+            return;
+
+        case 6:
+            system("cls");
+            printf("\nEncerrando o programa.\n");
+            exit(0);
+            break;
+
+        default:
+            system("cls");
+            printf("\nOpcao errada! Digite novamente.\n");
+            sleep(3);
+            break;
+        }
+    } while (escolha != 6);
 }
 
 void desativarProduto()
 {
-    printf("Produto deletado com sucesso");
 }
 
 void buscarProduto()
@@ -150,19 +264,30 @@ void buscarProduto()
 
     printf("Digite o ID do produto que deseja Buscar: ");
     scanf("%d", &id);
-    while (getchar() != '\n');
+    while (getchar() != '\n')
+        ;
 
     for (int i = 0; i < TAM; i++)
     {
-        if (id == produtos[i].id)
+        if (produtos[i].id == id)
         {
-            printf("\n+------+--------------------+----------+---------------+----------+");
-            printf("\n| %-4s | %-18s | %-8s | %-13s | %-8s |", "ID", "Nome", "Estoque", "Preco", "Status");
-            printf("\n+------+--------------------+----------+---------------+----------+");
-            printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-8s |", produtos[id].id, produtos[id].nome, produtos[id].estoque, produtos[id].preco, produtos[id].status);
-            printf("\n+------+--------------------+----------+---------------+----------+");
-        
+            id = i;
+            break;
         }
+    }
+
+    if (id != 0)
+    {
+        printf("Produto com esse ID nao encontrado!");
+    }
+    else
+    {
+
+        printf("\n+------+--------------------+----------+---------------+----------+");
+        printf("\n| %-4s | %-18s | %-8s | %-13s | %-8s |", "ID", "Nome", "Estoque", "Preco", "Status");
+        printf("\n+------+--------------------+----------+---------------+----------+");
+        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-8s |", produtos[id].id, produtos[id].nome, produtos[id].estoque, produtos[id].preco, produtos[id].status);
+        printf("\n+------+--------------------+----------+---------------+----------+");
     }
 }
 
@@ -191,8 +316,7 @@ void buscarProdutos()
 
     for (int i = 0; i < TAM; i++)
     {
-        if (produtos[i].id == -1)
-            continue;
+        if (produtos[i].id == -1)continue;
         printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-8s |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco, produtos[i].status);
         printf("\n+------+--------------------+----------+---------------+----------+");
     }

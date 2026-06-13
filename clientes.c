@@ -130,15 +130,15 @@ void listarClientes()
         return;
     }
 
-    printf("\n+------+--------------------+---------------+----------------+----------+");
-    printf("\n| %-4s | %-18s | %-13s | %-14s | %-8s |", "ID", "Nome", "CPF", "Total de Vendas", "Status");
-    printf("\n+------+--------------------+---------------+----------------+----------+");
+    printf("\n+------+--------------------+---------------+-----------------+----------+");
+    printf("\n| %-4s | %-18s | %-13s | %-15s | %-8s |", "ID", "Nome", "CPF", "Total de Vendas", "Status");
+    printf("\n+------+--------------------+---------------+-----------------+----------+");
 
     for (int i = 0; i < TAM; i++)
     {
         if (clientes[i].id == -1)continue;
-        printf("\n| %-4d | %-18s | %-13s | %-14d | %-8s |", clientes[i].id, clientes[i].nome, clientes[i].cpf, clientes[i].totalvendas, clientes[i].status);
-        printf("\n+------+--------------------+---------------+----------------+----------+");
+        printf("\n| %-4d | %-18s | %-13s | R$: %-11d | %-8s |", clientes[i].id, clientes[i].nome, clientes[i].cpf, clientes[i].totalvendas, clientes[i].status);
+        printf("\n+------+--------------------+---------------+-----------------+----------+");
     }
 }
 
