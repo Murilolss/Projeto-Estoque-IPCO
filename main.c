@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include "produtos.c"
 #include "clientes.c"
+#include "vendas.c"
 #include "sgbd.h"
 #define TAM 3
 
@@ -64,7 +65,7 @@ void menu()
 
         case 3:
             system("cls");
-            printf("Pagina de Vendas");
+            menuVenda();
             break;
 
         case 4:

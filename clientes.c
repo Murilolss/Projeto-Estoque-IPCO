@@ -12,6 +12,7 @@
     D = DELETE
 */
 int validarCpf(const char *cpf_str);
+int campoVazio(const char *str);
 void cadastroCliente();
 void listarClientes();
 
@@ -87,28 +88,49 @@ void cadastroCliente()
     else
     {
         char cpf[16];
-        clientes[vazio].id = vazio + 1;
-
+        char nomeTemp[30];
+        int cpfExiste = 0;
+        
         printf("Digite o Nome Completo do Cliente: ");
-        fgets(clientes[vazio].nome, 30, stdin);
-        clientes[vazio].nome[strcspn(clientes[vazio].nome, "\n")] = '\0';
+        fgets(nomeTemp, 30, stdin);
+        nomeTemp[strcspn(nomeTemp, "\n")] = '\0';
 
-        printf("Digite o CPF do Cliente (apenas numeros): ");
-        fgets(cpf, sizeof(cpf), stdin);
-
-        if (validarCpf(cpf))
+        if (campoVazio(nomeTemp))
         {
-            strcpy(clientes[vazio].cpf, cpf);
-            clientes[vazio].cpf[strcspn(clientes[vazio].cpf, "\n")] = '\0';
-            printf("\nCliente cadastrado com sucesso!");
+            printf("Nome nao pode ser vazio!\n");
+            return;
         }
-        else
+        
+        printf("Digite o CPF do Cliente: ");
+        fgets(cpf, 16, stdin);
+        cpf[strcspn(cpf, "\n")] = '\0';
+
+        if (!validarCpf(cpf))
         {
             printf("CPF Invalido!\n");
-            printf("Tente Novamente...");
+            return;
         }
 
+        for (int i = 0; i < TAM; i++)
+        {
+            if (strcmp(clientes[i].cpf, cpf) == 0)
+            {
+                cpfExiste = 1;
+                break;
+            }
+        }
+
+        if (cpfExiste)
+        {
+            printf("CPF ja cadastrado!\n");
+            return;
+        }
+
+        clientes[vazio].id = vazio + 1;
+        strcpy(clientes[vazio].nome, nomeTemp);
+        strcpy(clientes[vazio].cpf, cpf);
         strcpy(clientes[vazio].status, "ATIVO");
+        printf("Cliente cadastrado com sucesso!\n");
     }
 }
 
@@ -136,7 +158,8 @@ void listarClientes()
 
     for (int i = 0; i < TAM; i++)
     {
-        if (clientes[i].id == -1)continue;
+        if (clientes[i].id == -1)
+            continue;
         printf("\n| %-4d | %-18s | %-13s | R$: %-11d | %-8s |", clientes[i].id, clientes[i].nome, clientes[i].cpf, clientes[i].totalvendas, clientes[i].status);
         printf("\n+------+--------------------+---------------+-----------------+----------+");
     }
@@ -189,4 +212,9 @@ int validarCpf(const char *cpf_str)
         return 0;
 
     return 1;
+}
+
+int campoVazio(const char *str)
+{
+    return str == NULL || str[0] == '\0';
 }

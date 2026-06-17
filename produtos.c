@@ -18,6 +18,7 @@ void atualizarProduto();
 void desativarProduto();
 void buscarProduto();
 void buscarProdutos();
+void estoqueBaixo();
 
 void menuProduto()
 {
@@ -31,8 +32,9 @@ void menuProduto()
         printf("3 - Deletar Produto\n");
         printf("4 - Buscar Produto (ID)\n");
         printf("5 - Listar Produtos\n");
-        printf("6 - Voltar\n");
-        printf("7 - Encerrar Programa\n");
+        printf("6 - Nivel Baixo de Estoque\n");
+        printf("7 - Voltar\n");
+        printf("8 - Encerrar Programa\n");
         printf("------------------------------\n");
         printf("Digite uma das Opcoes: ");
         scanf("%d", &escolha);
@@ -71,15 +73,27 @@ void menuProduto()
         case 5:
             system("cls");
             buscarProdutos();
+            printf("\n");
+
             printf("\nPressione Enter para voltar...");
             getchar();
 
             break;
 
         case 6:
-            return;
+            system("cls");
+            estoqueBaixo();
+            printf("\n");
+
+            printf("\nPressione Enter para voltar...");
+            getchar();
+
+            break;
 
         case 7:
+            return;
+
+        case 8:
             system("cls");
             printf("\nEncerrando o programa.\n");
             exit(0);
@@ -283,11 +297,11 @@ void buscarProduto()
     else
     {
 
-        printf("\n+------+--------------------+----------+---------------+----------+");
-        printf("\n| %-4s | %-18s | %-8s | %-13s | %-8s |", "ID", "Nome", "Estoque", "Preco", "Status");
-        printf("\n+------+--------------------+----------+---------------+----------+");
-        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-8s |", produtos[id].id, produtos[id].nome, produtos[id].estoque, produtos[id].preco, produtos[id].status);
-        printf("\n+------+--------------------+----------+---------------+----------+");
+        printf("\n+------+--------------------+----------+---------------+-------------+");
+        printf("\n| %-4s | %-18s | %-8s | %-13s | %-11s |", "ID", "Nome", "Estoque", "Preco", "Status");
+        printf("\n+------+--------------------+----------+---------------+-------------+");
+        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-11s |", produtos[id].id, produtos[id].nome, produtos[id].estoque, produtos[id].preco, produtos[id].status);
+        printf("\n+------+--------------------+----------+---------------+-------------+");
     }
 }
 
@@ -295,6 +309,7 @@ void buscarProdutos()
 {
 
     int temProduto = 0;
+    float totalEstoque = 0;
     for (int i = 0; i < TAM; i++)
     {
         if (produtos[i].id != -1)
@@ -310,14 +325,62 @@ void buscarProdutos()
         return;
     }
 
-    printf("\n+------+--------------------+----------+---------------+----------+");
-    printf("\n| %-4s | %-18s | %-8s | %-13s | %-8s |", "ID", "Nome", "Estoque", "Preco", "Status");
-    printf("\n+------+--------------------+----------+---------------+----------+");
+    printf("\n+------+--------------------+----------+---------------+-------------+");
+    printf("\n| %-4s | %-18s | %-8s | %-13s | %-11s |", "ID", "Nome", "Estoque", "Preco", "Status");
+    printf("\n+------+--------------------+----------+---------------+-------------+");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produtos[i].id == -1)continue;
-        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-8s |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco, produtos[i].status);
-        printf("\n+------+--------------------+----------+---------------+----------+");
+        totalEstoque = totalEstoque + (produtos[i].estoque * produtos[i].preco);
+        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-11s |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco, produtos[i].status);
+        printf("\n+------+--------------------+----------+---------------+-------------+");
     }
+
+    printf("\n");
+    printf("\n|   Valor total do Estoque  |--------------------------|  R$: %.2f  |", totalEstoque);
+}
+
+void estoqueBaixo()
+{
+    int quantidadeMin = 0;
+
+    printf("Digite uma Quantidade minima: ");
+    scanf("%d", &quantidadeMin);
+    while (getchar() != '\n')
+        ;
+
+    int temProduto = 0;
+    for (int i = 0; i < TAM; i++)
+    {
+        if ((produtos[i].estoque != 0) && (produtos[i].estoque <= quantidadeMin))
+        {
+            temProduto = 1;
+            break;
+        }
+    }
+
+    if (!temProduto)
+    {
+        printf("Nenhum Produto encontrado com Estoque abaixo da Quantidade minima\n");
+        return;
+    }
+
+    printf("Produtos com Estoque menor ou igual a: %d", quantidadeMin);
+    printf("\n+------+--------------------+----------+---------------+-------------+");
+    printf("\n| %-4s | %-18s | %-8s | %-13s | %-11s |", "ID", "Nome", "Estoque", "Preco", "Status");
+    printf("\n+------+--------------------+----------+---------------+-------------+");
+
+    for (int i = 0; i < TAM; i++)
+    {
+        if (produtos[i].estoque <= quantidadeMin)
+        {
+            if (produtos[i].id == -1)
+                continue;
+            printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-11s |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco, produtos[i].status);
+            printf("\n+------+--------------------+----------+---------------+-------------+");
+        }
+    }
+
+    printf("\n");
 }
