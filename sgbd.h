@@ -30,7 +30,7 @@ extern Cliente clientes[TAM];
 
 typedef struct{
     int id;
-    char datavenda[10];
+    char datavenda[12];
     char cpfcliente[16];
     int idproduto;
     int qtddesejada;

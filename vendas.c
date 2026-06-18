@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include "sgbd.h"
 
 /*
@@ -44,8 +45,9 @@ void menuVenda()
         case 2:
             system("cls");
             listarVendas();
+            printf("\nPressione Enter para voltar...");
+            getchar();
 
-            sleep(3);
             break;
 
         case 3:
@@ -85,24 +87,22 @@ void cadastroVenda()
     }
     else
     {
-        char dataTemp[10];
+        char dataTemp[12];
         char cpf[16];
         int idProduto = 0;
-        int idCliente = 0;
         int quantidade = 0;
         int clienteEncontrado = 0;
         int produtoEncontrado = -1;
 
         printf("Digite a data da venda no formato dd/mm/aaaa: ");
-        fgets(dataTemp, 10, stdin);
+        fgets(dataTemp,sizeof(dataTemp), stdin);
         dataTemp[strcspn(dataTemp, "\n")] = '\0';
 
         printf("Informe o CPF do Cliente: ");
-        scanf("%d", &idCliente);
-        while (getchar() != '\n')
-            ;
+        fgets(cpf, 16, stdin);
+        cpf[strcspn(cpf, "\n")] = '\0';
 
-        printf("Informe o ID do Produto: ");
+        printf("\nInforme o ID do Produto: ");
         scanf("%d", &idProduto);
         while (getchar() != '\n')
             ;
@@ -164,12 +164,12 @@ void cadastroVenda()
 
 void listarVendas()
 {
-    int temProduto = 0;
+    int temVendas = 0;
     for (int i = 0; i < TAM; i++)
     {
         if (produtos[i].id != -1)
         {
-            temProduto = 1;
+            temVendas = 1;
             break;
         }
     }
@@ -178,7 +178,7 @@ void listarVendas()
     {
     }
 
-    if (!temProduto)
+    if (!temVendas)
     {
         printf("Nenhuma Venda encontrada\n");
         return;

@@ -7,7 +7,7 @@
 #include "sgbd.h"
 #define TAM 3
 
-// Aquivo main - Responsável pelo menu
+// Arqivo main - Responsável pelo menu
 
 Produto produtos[TAM];
 Venda vendas[TAM];

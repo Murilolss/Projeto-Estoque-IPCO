@@ -31,10 +31,11 @@ void menuProduto()
         printf("2 - Atualizar Produto\n");
         printf("3 - Deletar Produto\n");
         printf("4 - Buscar Produto (ID)\n");
-        printf("5 - Listar Produtos\n");
-        printf("6 - Nivel Baixo de Estoque\n");
-        printf("7 - Voltar\n");
-        printf("8 - Encerrar Programa\n");
+        printf("5 - Buscar Produto (Nome)\n");
+        printf("6 - Listar Produtos\n");
+        printf("7 - Nivel Baixo de Estoque\n");
+        printf("8 - Voltar\n");
+        printf("9 - Encerrar Programa\n");
         printf("------------------------------\n");
         printf("Digite uma das Opcoes: ");
         scanf("%d", &escolha);
@@ -69,8 +70,16 @@ void menuProduto()
             getchar();
 
             break;
-
+        
         case 5:
+            system("cls");
+            buscarProdutoNome();
+            printf("\nPressione Enter para voltar...");
+            getchar();
+
+            break;
+
+        case 6:
             system("cls");
             buscarProdutos();
             printf("\n");
@@ -80,7 +89,7 @@ void menuProduto()
 
             break;
 
-        case 6:
+        case 7:
             system("cls");
             estoqueBaixo();
             printf("\n");
@@ -90,10 +99,10 @@ void menuProduto()
 
             break;
 
-        case 7:
+        case 8:
             return;
 
-        case 8:
+        case 9:
             system("cls");
             printf("\nEncerrando o programa.\n");
             exit(0);
@@ -126,25 +135,42 @@ void cadastroProduto()
     }
     else
     {
-
-        produtos[vazio].id = vazio + 1;
-
+        int nomeExistente = 0;
+        char nomeTemp[30];
+        
         printf("Digite o Nome do Produto: ");
-        fgets(produtos[vazio].nome, 30, stdin);
-        produtos[vazio].nome[strcspn(produtos[vazio].nome, "\n")] = '\0';
+        fgets(nomeTemp, 30, stdin);
+        nomeTemp[strcspn(nomeTemp, "\n")] = '\0';
+        
+        for (int i=0; i<TAM; i++)
+        {
+            if (strcmp(produtos[i].nome, nomeTemp) == 0)
+            {
+                nomeExistente = 1;
+                break;
+            }
+        }
 
+        if (nomeExistente)
+        {
+            printf("Produto com esse nome ja esta cadastrado!\n");
+            return;
+        }
+        
         printf("Digite a quantidade no Estoque: ");
         scanf("%d", &produtos[vazio].estoque);
         while (getchar() != '\n')
-            ;
-
+        ;
+        
         printf("Digite o Preco do Produto: ");
         scanf("%f", &produtos[vazio].preco);
         while (getchar() != '\n')
-            ;
-
+        ;
+        
         strcpy(produtos[vazio].status, "ATIVO");
-
+        
+        produtos[vazio].id = vazio + 1;
+        strcpy(produtos[vazio].nome, nomeTemp);
         printf("\nProduto cadastrado com sucesso!");
     }
 }
@@ -380,6 +406,53 @@ void estoqueBaixo()
             printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-11s |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco, produtos[i].status);
             printf("\n+------+--------------------+----------+---------------+-------------+");
         }
+    }
+
+    printf("\n");
+}
+
+void paraMinusculo(char *destino, const char *origem) {
+    int i;
+    for (i = 0; origem[i] != '\0'; i++) {
+        destino[i] = tolower((unsigned char)origem[i]);
+    }
+    destino[i] = '\0';
+}
+
+void buscarProdutoNome()
+{
+    int encontrou = 0;
+    char termoMin[30];
+    char nomeMin[30];
+    char nome[30];
+    
+    printf("Digite o nome do produto que deseja buscar:");
+    fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] = '\0';
+
+
+    paraMinusculo(termoMin, nome);
+
+    printf("\n+------+--------------------+----------+---------------+-------------+");
+    printf("\n| %-4s | %-18s | %-8s | %-13s | %-11s |", "ID", "Nome", "Estoque", "Preco", "Status");
+    printf("\n+------+--------------------+----------+---------------+-------------+");
+
+    for (int i = 0; i < TAM; i++)
+    {
+        if (produtos[i].id == -1) continue;
+
+        paraMinusculo(nomeMin, produtos[i].nome);
+        if (strstr(nomeMin, termoMin) == NULL) continue;
+
+        encontrou = 1;
+        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-11s |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco, produtos[i].status);
+        printf("\n+------+--------------------+----------+---------------+-------------+");
+    }
+
+    if (!encontrou)
+    {
+        printf("\nNenhum produto encontrado com esse nome.\n");
+        return;
     }
 
     printf("\n");
