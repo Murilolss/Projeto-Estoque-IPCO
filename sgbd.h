@@ -8,6 +8,7 @@
     Funciona basicamente como um Banco de dados
 */
 
+// Data Produto
 typedef struct {
     int id;
     char nome[30];
@@ -18,22 +19,25 @@ typedef struct {
 
 extern Produto produtos[TAM];
 
+// Data Cliente
 typedef struct{
     int id;
     char nome[30];
     char cpf[16];
     char status[15];
-    int totalvendas;
+    float totalvendas;
 } Cliente;
 
 extern Cliente clientes[TAM];
 
+// Data Venda
 typedef struct{
     int id;
     char datavenda[12];
     char cpfcliente[16];
     int idproduto;
     int qtddesejada;
+    float totalVenda;
 } Venda;
 
 extern Venda vendas[TAM];

@@ -9,39 +9,48 @@
 
 // Arqivo main - Responsável pelo menu
 
+// Declaração de Vetores Globais
 Produto produtos[TAM];
 Venda vendas[TAM];
 Cliente clientes[TAM];
 
+// Chamada da Função menu
 void menu();
 
+// Funcção Principal
 int main()
 {
 
-     for (int i = 0; i < TAM; i++) {
+    //Inicialização de ID
+    for (int i = 0; i < TAM; i++)
+    {
         produtos[i].id = -1;
     }
 
-    for (int i = 0; i < TAM; i++) {
+    for (int i = 0; i < TAM; i++)
+    {
         clientes[i].id = -1;
     }
 
-    for (int i = 0; i < TAM; i++) {
+    for (int i = 0; i < TAM; i++)
+    {
         vendas[i].id = -1;
     }
 
+    // Menu de Seleção
     menu();
 
     return 0;
 }
 
+// Menu de Seleção
 void menu()
 {
     int escolha;
     do
     {
         system("cls");
-        printf("---- Selecion uma Pagina ----\n");
+        printf("---- Selecione uma Pagina ----\n");
         printf("1 - Produtos\n");
         printf("2 - Clientes\n");
         printf("3 - Vendas\n");
@@ -49,7 +58,8 @@ void menu()
         printf("------------------------------\n");
         printf("Digite uma das Opcoes: ");
         scanf("%d", &escolha);
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
 
         switch (escolha)
         {

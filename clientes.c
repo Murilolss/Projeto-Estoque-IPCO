@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 #include <unistd.h>
 #include "sgbd.h"
 #define TAM 3
@@ -11,11 +12,14 @@
     U = UPDATE
     D = DELETE
 */
+
+// Chamadas das Funções Utilizadas
 int validarCpf(const char *cpf_str);
 int campoVazio(const char *str);
 void cadastroCliente();
 void listarClientes();
 
+// Menu de Seleção da parte do Cliente
 void menuCliente()
 {
     int escolha;
@@ -30,8 +34,7 @@ void menuCliente()
         printf("------------------------------\n");
         printf("Digite uma das Opcoes: ");
         scanf("%d", &escolha);
-        while (getchar() != '\n')
-            ;
+        while (getchar() != '\n');
 
         switch (escolha)
         {
@@ -69,8 +72,10 @@ void menuCliente()
     } while (escolha != 4);
 }
 
+// Função para Cadastrar Clientes
 void cadastroCliente()
 {
+    // Verifia o proximo Campo vazio do vetor
     int vazio = -1;
     for (int i = 0; i < TAM; i++)
     {
@@ -90,7 +95,7 @@ void cadastroCliente()
         char cpf[16];
         char nomeTemp[30];
         int cpfExiste = 0;
-        
+
         printf("Digite o Nome Completo do Cliente: ");
         fgets(nomeTemp, 30, stdin);
         nomeTemp[strcspn(nomeTemp, "\n")] = '\0';
@@ -100,7 +105,7 @@ void cadastroCliente()
             printf("Nome nao pode ser vazio!\n");
             return;
         }
-        
+
         printf("Digite o CPF do Cliente: ");
         fgets(cpf, 16, stdin);
         cpf[strcspn(cpf, "\n")] = '\0';
@@ -111,6 +116,7 @@ void cadastroCliente()
             return;
         }
 
+        // Compara se o CPF Digitado existe no vetor de clientes
         for (int i = 0; i < TAM; i++)
         {
             if (strcmp(clientes[i].cpf, cpf) == 0)
@@ -130,12 +136,14 @@ void cadastroCliente()
         strcpy(clientes[vazio].nome, nomeTemp);
         strcpy(clientes[vazio].cpf, cpf);
         strcpy(clientes[vazio].status, "ATIVO");
-        printf("Cliente cadastrado com sucesso!\n");
+        printf("\nCliente cadastrado com sucesso!");
     }
 }
 
+// Função para Listar os Clientes
 void listarClientes()
 {
+    // Verifica se tem cliente cadastrado no vetor
     int temCliente = 0;
     for (int i = 0; i < TAM; i++)
     {
@@ -152,6 +160,7 @@ void listarClientes()
         return;
     }
 
+    // Tabela de Clientes
     printf("\n+------+--------------------+---------------+-----------------+----------+");
     printf("\n| %-4s | %-18s | %-13s | %-15s | %-8s |", "ID", "Nome", "CPF", "Total de Vendas", "Status");
     printf("\n+------+--------------------+---------------+-----------------+----------+");
@@ -160,11 +169,12 @@ void listarClientes()
     {
         if (clientes[i].id == -1)
             continue;
-        printf("\n| %-4d | %-18s | %-13s | R$: %-11d | %-8s |", clientes[i].id, clientes[i].nome, clientes[i].cpf, clientes[i].totalvendas, clientes[i].status);
+        printf("\n| %-4d | %-18s | %-13s | R$: %-11.2f | %-8s |", clientes[i].id, clientes[i].nome, clientes[i].cpf, clientes[i].totalvendas, clientes[i].status);
         printf("\n+------+--------------------+---------------+-----------------+----------+");
     }
 }
 
+// Função para validação de CPF
 int validarCpf(const char *cpf_str)
 {
     char digits[12];
@@ -214,6 +224,7 @@ int validarCpf(const char *cpf_str)
     return 1;
 }
 
+// Validação de campo vazio
 int campoVazio(const char *str)
 {
     return str == NULL || str[0] == '\0';

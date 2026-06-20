@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 #include "sgbd.h"
 #define TAM 3
 
@@ -13,12 +14,15 @@
     D = DELETE
 */
 
+// Chamada das Funções Utilizadas
 void cadastroProduto();
 void atualizarProduto();
 void desativarProduto();
 void buscarProduto();
+void buscarProdutoNome();
 void buscarProdutos();
 void estoqueBaixo();
+void paraMinusculo(char *destino, const char *origem);
 
 void menuProduto()
 {
@@ -61,6 +65,8 @@ void menuProduto()
             system("cls");
             desativarProduto();
 
+            printf("\nPressione Enter para voltar...");
+            getchar();
             break;
 
         case 4:
@@ -70,7 +76,7 @@ void menuProduto()
             getchar();
 
             break;
-        
+
         case 5:
             system("cls");
             buscarProdutoNome();
@@ -117,8 +123,10 @@ void menuProduto()
     } while (escolha != 7);
 }
 
+// Função para cadastro de Produtos
 void cadastroProduto()
 {
+    // Verifia o proximo Campo vazio do vetor
     int vazio = -1;
     for (int i = 0; i < TAM; i++)
     {
@@ -137,14 +145,20 @@ void cadastroProduto()
     {
         int nomeExistente = 0;
         char nomeTemp[30];
-        
+        char nomeTempMin[30];
+
         printf("Digite o Nome do Produto: ");
         fgets(nomeTemp, 30, stdin);
         nomeTemp[strcspn(nomeTemp, "\n")] = '\0';
-        
-        for (int i=0; i<TAM; i++)
+
+        // Verifica se o nome do produto digitado ja existe no vetor
+        paraMinusculo(nomeTempMin, nomeTemp);
+        for (int i = 0; i < TAM; i++)
         {
-            if (strcmp(produtos[i].nome, nomeTemp) == 0)
+            if (produtos[i].id == -1)continue;
+            char nomeProdutoMin[30];
+            paraMinusculo(nomeProdutoMin, produtos[i].nome);
+            if (strcmp(nomeProdutoMin, nomeTempMin) == 0)
             {
                 nomeExistente = 1;
                 break;
@@ -156,44 +170,42 @@ void cadastroProduto()
             printf("Produto com esse nome ja esta cadastrado!\n");
             return;
         }
-        
+
         printf("Digite a quantidade no Estoque: ");
         scanf("%d", &produtos[vazio].estoque);
-        while (getchar() != '\n')
-        ;
-        
+        while (getchar() != '\n');
+
         printf("Digite o Preco do Produto: ");
         scanf("%f", &produtos[vazio].preco);
-        while (getchar() != '\n')
-        ;
-        
+        while (getchar() != '\n');
+
         strcpy(produtos[vazio].status, "ATIVO");
-        
+
         produtos[vazio].id = vazio + 1;
         strcpy(produtos[vazio].nome, nomeTemp);
         printf("\nProduto cadastrado com sucesso!");
     }
 }
 
+// Função para atualização de Produtos
 void atualizarProduto()
 {
     int id = 0;
 
     printf("Digite o ID do produto que deseja Atualizar: ");
     scanf("%d", &id);
-    while (getchar() != '\n')
-        ;
+    while (getchar() != '\n');
 
     for (int i = 0; i < TAM; i++)
     {
-        if (produtos[i].id == id)
+        if (id == produtos[i].id)
         {
             id = i;
             break;
         }
     }
 
-    if (id != 0)
+    if ((id == -1) || (produtos[id].id == 0))
     {
         printf("Produto com esse ID nao encontrado!");
     }
@@ -238,8 +250,7 @@ void atualizarProduto()
         case 2:
             printf("Digite a nova quantidade no Estoque: ");
             scanf("%d", &produtos[id].estoque);
-            while (getchar() != '\n')
-                ;
+            while (getchar() != '\n');
 
             printf("\nEstoque atualizado com sucesso! Pressione enter para voltar...");
             getchar();
@@ -248,8 +259,7 @@ void atualizarProduto()
         case 3:
             printf("Digite um novo Preco do Produto: ");
             scanf("%f", &produtos[id].preco);
-            while (getchar() != '\n')
-                ;
+            while (getchar() != '\n');
 
             printf("\nPreco atualizado com sucesso! Pressione enter para voltar...");
             getchar();
@@ -259,8 +269,7 @@ void atualizarProduto()
         case 4:
             printf("Digite 1 para Status(ATIVO) ou 2 para Status(INATIVO): ");
             scanf("%d", &escolhaStatus);
-            while (getchar() != '\n')
-                ;
+            while (getchar() != '\n');
 
             if (escolhaStatus == 1)
             {
@@ -294,10 +303,93 @@ void atualizarProduto()
     } while (escolha != 6);
 }
 
+// Função para (deletar) Produtos
 void desativarProduto()
 {
+    int id = 0;
+    int deletar = 0;
+    int ativar = 0;
+    int vinculado = 0;
+
+    printf("Digite o ID do produto que deseja deletar: ");
+    scanf("%d", &id);
+    while (getchar() != '\n');
+
+    for (int i = 0; i < TAM; i++)
+    {
+        if (id == produtos[i].id)
+        {
+            id = i;
+            break;
+        }
+    }
+
+    if ((id == -1) || (produtos[id].id == 0))
+    {
+        printf("Produto com esse ID nao encontrado!");
+    }
+
+    if (strcmp(produtos[id].status, "INATIVO") == 0)
+    {
+        printf("Produto selecionado esta INATIVO, Selecione 1 para ATIVAR ou 2 para voltar: ");
+        scanf("%d", &ativar);
+    }
+
+    if (ativar == 1)
+    {
+        printf("\nProduto ativado com Sucesso!");
+        strcpy(produtos[id].status, "ATIVO");
+    }
+    else if (ativar == 2)
+    {
+        return;
+    }
+
+    else
+    {
+
+        printf("\n+------+--------------------+----------+---------------+-------------+");
+        printf("\n| %-4s | %-18s | %-8s | %-13s | %-11s |", "ID", "Nome", "Estoque", "Preco", "Status");
+        printf("\n+------+--------------------+----------+---------------+-------------+");
+        printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-11s |", produtos[id].id, produtos[id].nome, produtos[id].estoque, produtos[id].preco, produtos[id].status);
+        printf("\n+------+--------------------+----------+---------------+-------------+");
+        printf("\n");
+        printf("\nO produto nao pode ser deletado, pode apenas mudar o status para INATIVO");
+        printf("\nDigite 1 para mudar status ou 2 para voltar: ");
+        scanf("%d", &deletar);
+        while (getchar() != '\n');
+
+        if (deletar == 1)
+        {
+            for (int i = 0; i < TAM; i++)
+            {
+                // Verifica se o produto a ser deletar esta vinculado em alguma venda
+                if (produtos[i].id == vendas[i].idproduto)
+                {
+                    vinculado = 1;
+                    break;
+                }
+            }
+        }
+        else if (deletar == 2)
+        {
+            return;
+        }
+
+        if (vinculado)
+        {
+            printf("\nPorduto nao pode ser desativado pois esta vinculado a uma venda!");
+            return;
+        }
+        else
+        {
+            strcpy(produtos[id].status, "INATIVO");
+            printf("\nPorduto desativado com sucesso!");
+        }
+    }
 }
 
+// Função para buscar Produto(ID)
 void buscarProduto()
 {
     int id = 0;
@@ -309,14 +401,14 @@ void buscarProduto()
 
     for (int i = 0; i < TAM; i++)
     {
-        if (produtos[i].id == id)
+        if (id == produtos[i].id)
         {
             id = i;
             break;
         }
     }
 
-    if (id != 0)
+    if ((id == -1) || (produtos[id].id == 0))
     {
         printf("Produto com esse ID nao encontrado!");
     }
@@ -331,6 +423,7 @@ void buscarProduto()
     }
 }
 
+// Função para listar todos os Produtos
 void buscarProdutos()
 {
 
@@ -367,18 +460,19 @@ void buscarProdutos()
     printf("\n|   Valor total do Estoque  |--------------------------|  R$: %.2f  |", totalEstoque);
 }
 
+// Função para verificar produtos abaixo do Estoque
 void estoqueBaixo()
 {
     int quantidadeMin = 0;
 
     printf("Digite uma Quantidade minima: ");
     scanf("%d", &quantidadeMin);
-    while (getchar() != '\n')
-        ;
+    while (getchar() != '\n');
 
     int temProduto = 0;
     for (int i = 0; i < TAM; i++)
     {
+        // Verificação de Estoque minimo
         if ((produtos[i].estoque != 0) && (produtos[i].estoque <= quantidadeMin))
         {
             temProduto = 1;
@@ -399,6 +493,7 @@ void estoqueBaixo()
 
     for (int i = 0; i < TAM; i++)
     {
+        // Lista todos os produtos conforme a quantidade minima digitada
         if (produtos[i].estoque <= quantidadeMin)
         {
             if (produtos[i].id == -1)
@@ -411,26 +506,30 @@ void estoqueBaixo()
     printf("\n");
 }
 
-void paraMinusculo(char *destino, const char *origem) {
+// Função para tranformar tudo em minusculo
+void paraMinusculo(char *destino, const char *origem)
+{
     int i;
-    for (i = 0; origem[i] != '\0'; i++) {
+    for (i = 0; origem[i] != '\0'; i++)
+    {
         destino[i] = tolower((unsigned char)origem[i]);
     }
     destino[i] = '\0';
 }
 
+// Função para Buscar Produtos por nome
 void buscarProdutoNome()
 {
     int encontrou = 0;
     char termoMin[30];
     char nomeMin[30];
     char nome[30];
-    
+
     printf("Digite o nome do produto que deseja buscar:");
     fgets(nome, sizeof(nome), stdin);
     nome[strcspn(nome, "\n")] = '\0';
 
-
+    // Função para tranformar o nome em minusculo para comparação
     paraMinusculo(termoMin, nome);
 
     printf("\n+------+--------------------+----------+---------------+-------------+");
@@ -439,10 +538,11 @@ void buscarProdutoNome()
 
     for (int i = 0; i < TAM; i++)
     {
-        if (produtos[i].id == -1) continue;
+        if (produtos[i].id == -1)
+            continue;
 
         paraMinusculo(nomeMin, produtos[i].nome);
-        if (strstr(nomeMin, termoMin) == NULL) continue;
+        if (strstr(nomeMin, termoMin) == NULL)continue;
 
         encontrou = 1;
         printf("\n| %-4d | %-18s | %-8d | R$ %9.2f  | %-11s |", produtos[i].id, produtos[i].nome, produtos[i].estoque, produtos[i].preco, produtos[i].status);
