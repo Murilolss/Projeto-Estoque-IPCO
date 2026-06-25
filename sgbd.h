@@ -42,4 +42,14 @@ typedef struct{
 
 extern Venda vendas[TAM];
 
+// Funções de Salvar e Carregar Dados
+void salvarProdutos();
+void carregarProdutos();
+void salvarClientes();
+void carregarClientes();
+void salvarVendas();
+void carregarVendas();
+void salvarTudo();
+void carregarTudo();
+
 #endif

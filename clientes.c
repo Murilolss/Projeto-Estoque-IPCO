@@ -41,6 +41,7 @@ void menuCliente()
         case 1:
             system("cls");
             cadastroCliente();
+            salvarClientes();
 
             sleep(3);
             break;

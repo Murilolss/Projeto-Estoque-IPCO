@@ -40,6 +40,9 @@ void menuVenda()
         case 1:
             system("cls");
             cadastroVenda();
+            salvarVendas();
+            salvarClientes();
+            salvarProdutos();
 
             sleep(4);
             break;
@@ -95,7 +98,7 @@ void cadastroVenda()
         char cpf[16];
         int idProduto = 0;
         int quantidade = 0;
-        int indiceCliente = -1;
+        int idCliente = -1;
         int indiceProduto = -1;
 
         printf("Digite a data da venda no formato dd/mm/aaaa: ");
@@ -108,11 +111,13 @@ void cadastroVenda()
 
         printf("Informe o ID do Produto: ");
         scanf("%d", &idProduto);
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
 
         printf("Informe a Quantidade: ");
         scanf("%d", &quantidade);
-        while (getchar() != '\n');
+        while (getchar() != '\n')
+            ;
 
         // Validação de data
         if (!validaData(dataTemp))
@@ -131,16 +136,16 @@ void cadastroVenda()
         // Validação para verificar se o cpf digitado existe no vetor de cliente
         for (int i = 0; i < TAM; i++)
         {
-            if (clientes[i].id == -1)continue;
-
+            if (clientes[i].id == -1)
+                continue;
             if (strcmp(clientes[i].cpf, cpf) == 0)
             {
-                indiceCliente = i;
+                idCliente = i; // ← salva o índice, não o id
                 break;
             }
         }
 
-        if (indiceCliente == -1)
+        if (idCliente == -1)
         {
             printf("Cliente com esse CPF nao encontrado no sistema!\n");
             return;
@@ -162,7 +167,7 @@ void cadastroVenda()
             return;
         }
 
-        // Validação para verificar se o prodtudo selecionado está inativo 
+        // Validação para verificar se o prodtudo selecionado está inativo
         if (strcmp(produtos[indiceProduto].status, "INATIVO") == 0)
         {
             printf("O Produto Selecionado se encontra INATIVO, Ative ele ou Selecione outro Produto");
@@ -183,7 +188,7 @@ void cadastroVenda()
         vendas[vazio].qtddesejada = quantidade;
         produtos[indiceProduto].estoque = produtos[indiceProduto].estoque - vendas[vazio].qtddesejada;
         vendas[vazio].totalVenda = quantidade * produtos[indiceProduto].preco;
-        clientes[indiceCliente].totalvendas = clientes[indiceCliente].totalvendas + vendas[vazio].totalVenda;
+        clientes[idCliente].totalvendas = clientes[idCliente].totalvendas + vendas[vazio].totalVenda;
         printf("\nVenda cadastrada com sucesso!");
     }
 }
@@ -215,13 +220,14 @@ void listarVendas()
     for (int i = 0; i < TAM; i++)
     {
         // Validação para verificar se o CPF digitado existe no vetor de Clientes
-        int indiceCliente = -1;
+        int idCliente = -1;
         for (int j = 0; j < TAM; j++)
         {
-            if (clientes[j].id == -1)continue;
+            if (clientes[j].id == -1)
+                continue;
             if (strcmp(vendas[i].cpfcliente, clientes[j].cpf) == 0)
             {
-                indiceCliente = j;
+                idCliente = j;
                 break;
             }
         }
@@ -230,7 +236,8 @@ void listarVendas()
         int indiceProduto = -1;
         for (int k = 0; k < TAM; k++)
         {
-            if (produtos[k].id == -1)continue;
+            if (produtos[k].id == -1)
+                continue;
             if (produtos[k].id == vendas[i].idproduto)
             {
                 indiceProduto = k;
@@ -238,13 +245,13 @@ void listarVendas()
             }
         }
 
-        if (vendas[i].id == -1)continue;
+        if (vendas[i].id == -1)
+            continue;
         printf("\n| %-6d | %-10s | %-13s | %-18s | %-8d | %-10d | %-18s | %-12.2f |",
-               vendas[i].id, vendas[i].datavenda, vendas[i].cpfcliente, clientes[indiceCliente].nome,
+               vendas[i].id, vendas[i].datavenda, vendas[i].cpfcliente, clientes[idCliente].nome,
                vendas[i].idproduto, vendas[i].qtddesejada, produtos[indiceProduto].nome, vendas[i].totalVenda);
         printf("\n+--------+------------+---------------+--------------------+----------+------------+--------------------+--------------+");
     }
-
     printf("\n");
 }
 

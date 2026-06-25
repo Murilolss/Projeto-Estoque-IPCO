@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "persistencia.c"
 #include "produtos.c"
 #include "clientes.c"
 #include "vendas.c"
@@ -17,11 +18,11 @@ Cliente clientes[TAM];
 // Chamada da Função menu
 void menu();
 
-// Funcção Principal
+// Função Principal
 int main()
 {
 
-    //Inicialização de ID
+    // Inicialização de ID
     for (int i = 0; i < TAM; i++)
     {
         produtos[i].id = -1;
@@ -37,8 +38,14 @@ int main()
         vendas[i].id = -1;
     }
 
+    // Chamada das Funções de Carregar Dados
+    carregarTudo();
+
     // Menu de Seleção
     menu();
+
+    // Chamada das Funções de Salvar Dados
+    salvarTudo();
 
     return 0;
 }

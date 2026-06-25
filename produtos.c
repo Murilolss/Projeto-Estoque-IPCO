@@ -51,6 +51,7 @@ void menuProduto()
         case 1:
             system("cls");
             cadastroProduto();
+            salvarProdutos();
 
             sleep(3);
             break;
