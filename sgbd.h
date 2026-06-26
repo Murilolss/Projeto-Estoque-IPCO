@@ -1,7 +1,7 @@
 #ifndef SGBD_H
 #define SGBD_H
 
-#define TAM 3
+#define TAM 10
 
 /*
     Arquivo SGBD - Database Management System
