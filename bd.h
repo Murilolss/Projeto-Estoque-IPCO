@@ -1,10 +1,10 @@
-#ifndef SGBD_H
-#define SGBD_H
+#ifndef BD_H
+#define BD_H
 
 #define TAM 10
 
 /*
-    Arquivo SGBD - Database Management System
+    Arquivo BD - Database Management
     Funciona basicamente como um Banco de dados
 */
 

@@ -5,7 +5,7 @@
 #include "produtos.c"
 #include "clientes.c"
 #include "vendas.c"
-#include "sgbd.h"
+#include "bd.h"
 #define TAM 10
 
 // Arquivo main - Responsável pelo menu

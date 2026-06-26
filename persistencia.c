@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "sgbd.h"
+#include "bd.h"
 
 #define ARQUIVO_PRODUTOS "produtos.dat"
 #define ARQUIVO_CLIENTES "clientes.dat"

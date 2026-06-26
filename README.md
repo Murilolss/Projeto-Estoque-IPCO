@@ -36,7 +36,7 @@ Desenvolver um sistema de controle de estoque utilizando a linguagem C, aplicand
 ├── clientes.c
 ├── vendas.c
 ├── persistencia.c
-└── sgbh.h
+└── bd.h
 ```
 ## 💾 Persistência de Dados
 
@@ -140,8 +140,6 @@ Para **resetar** os dados, basta deletar esses arquivos. Na próxima execução,
 | Legível por humanos | ❌ Não | ✅ Sim |
 | Compatível com a struct | ✅ Perfeito | Requer conversão manual |
  
-> Para um SGBD escolar, **binário é a escolha ideal** — menos código, menos bugs.
-
 
 ## 🌐 Onde Nos Encontrar
 

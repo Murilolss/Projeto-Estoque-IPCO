@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
-#include "sgbd.h"
+#include "bd.h"
 #define TAM 10
 
 /*
@@ -147,6 +147,8 @@ void cadastroProduto()
         int nomeExistente = 0;
         char nomeTemp[30];
         char nomeTempMin[30];
+        float precoTemp = 0;
+        int estoqueTemp = 0;
 
         printf("Digite o Nome do Produto: ");
         fgets(nomeTemp, 30, stdin);
@@ -173,15 +175,28 @@ void cadastroProduto()
         }
 
         printf("Digite a quantidade no Estoque: ");
-        scanf("%d", &produtos[vazio].estoque);
+        scanf("%d", &estoqueTemp);
         while (getchar() != '\n');
 
+        if (estoqueTemp < 0)
+        {
+            printf("Estoque nao pode ser negativo!\n");
+            return;
+        }
+
         printf("Digite o Preco do Produto: ");
-        scanf("%f", &produtos[vazio].preco);
+        scanf("%f", &precoTemp);
         while (getchar() != '\n');
+
+        if (precoTemp < 0)
+        {
+            printf("Preco nao pode ser negativo!\n");
+            return;
+        }
 
         strcpy(produtos[vazio].status, "ATIVO");
 
+        produtos[vazio].preco = precoTemp;
         produtos[vazio].id = vazio + 1;
         strcpy(produtos[vazio].nome, nomeTemp);
         printf("\nProduto cadastrado com sucesso!");

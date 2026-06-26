@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <unistd.h>
-#include "sgbd.h"
+#include "bd.h"
 #define TAM 10
 
 /*
