@@ -8,7 +8,7 @@
 #include "sgbd.h"
 #define TAM 10
 
-// Arqivo main - Responsável pelo menu
+// Arquivo main - Responsável pelo menu
 
 // Declaração de Vetores Globais
 Produto produtos[TAM];

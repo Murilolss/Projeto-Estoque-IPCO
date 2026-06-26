@@ -5,7 +5,7 @@
 #define ARQUIVO_CLIENTES "clientes.dat"
 #define ARQUIVO_VENDAS "vendas.dat"
 
-// Arqivo persistencia - Responsável pelas funções de salvar e carregar os dados do sistema
+// Arquivo persistencia - Responsável pelas funções de salvar e carregar os dados do sistema
 
 // Produtos - Salvar
 void salvarProdutos()

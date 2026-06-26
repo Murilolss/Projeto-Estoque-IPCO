@@ -6,7 +6,7 @@
 #define TAM 10
 
 /*
-    Aquivo clientes - Responsável pelo CRUD dessa "página"
+    Arquivo clientes - Responsável pelo CRUD dessa "página"
     C = CREATE
     R = READ
     U = UPDATE
