@@ -3,7 +3,7 @@
 #include <strings.h>
 #include <unistd.h>
 #include "sgbd.h"
-#define TAM 3
+#define TAM 10
 
 /*
     Aquivo clientes - Responsável pelo CRUD dessa "página"

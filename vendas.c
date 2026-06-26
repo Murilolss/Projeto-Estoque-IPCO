@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "sgbd.h"
+#define TAM 10
 
 /*
     Aquivo Vendas - Responsável pelo CRUD dessa "página"

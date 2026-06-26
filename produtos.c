@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include "sgbd.h"
-#define TAM 3
+#define TAM 10
 
 /*
     Aquivo produtos - Responsável pelo CRUD dessa "página"

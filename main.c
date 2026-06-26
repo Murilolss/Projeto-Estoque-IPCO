@@ -6,7 +6,7 @@
 #include "clientes.c"
 #include "vendas.c"
 #include "sgbd.h"
-#define TAM 3
+#define TAM 10
 
 // Arqivo main - Responsável pelo menu
 
